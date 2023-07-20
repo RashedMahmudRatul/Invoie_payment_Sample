@@ -1,0 +1,9 @@
+ 
+String Email="lyopay_bd_tst_t1@mailinator.com"; //Digipro
+String secretKey = "XEWKO5TR7VSOZQTCB4TC2ZQBXY";//Digipro
+
+
+String Email="stalin.neurotrade.tst.1@mailinator.com"; //Neotrade
+String secretKey = "6UNVY5GUBZIYMVIW4UZBLXTGO4";//Neotrade
+
+

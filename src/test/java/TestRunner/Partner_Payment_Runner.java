@@ -1,21 +1,9 @@
 package TestRunner;
 
-import io.cucumber.core.cli.Main;
-import io.cucumber.core.options.RuntimeOptions;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
-//import io.cucumber.core.model.CucumberFeature;
-//import io.cucumber.junit.Cucumber;
-//import io.cucumber.junit.CucumberOptions;
-//import org.junit.runner.RunWith;
-//import org.junit.runners.model.InitializationError;
-//
-//import java.io.FileInputStream;
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Properties;
+
 
 
 @RunWith(Cucumber.class)

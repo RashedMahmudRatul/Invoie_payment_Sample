@@ -5,6 +5,8 @@ import io.restassured.http.ContentType;
 import io.restassured.internal.RestAssuredResponseImpl;
 import io.restassured.response.Response;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +29,6 @@ public class Partner_Payment_Api {
         requestHeader.put("X-AU-Token", token);
         requestHeader.put("Content-Type", ContentType.JSON);
         requestHeader.put("Accept", ContentType.JSON);
-        System.out.println("1");
         return requestHeader;
     }
 
@@ -45,8 +46,6 @@ public class Partner_Payment_Api {
         }
 
     }
-
-
     public static void createInvoice(String country) throws Exception {
         RestAssured.baseURI  = baseUrl();
         String requestBody = "{\r\n"
@@ -61,6 +60,64 @@ public class Partner_Payment_Api {
                 + "    \"currency\": \"" + invoiceCurrency() + "\",\r\n"
                 + "    \"amount\": \"" + invoiceAmount() + "\",\r\n"
                 + "    \"expiryDateTime\": \"" + "2023-07-29T00:00:00.000Z" + "\",\r\n"
+                + "    \"webhookUrl\": \"" + "www.webhook.com" + "\",\r\n"
+                + "    \"purpose\": \"" + "This is a test purpose." + "\"\r\n"
+                + "}";
+        response = given().headers(requestHeader())
+                .body(requestBody)
+                .when().post(endPoint)
+                .then().extract().response();
+
+        System.out.println("Response Body: "+response.getBody().asString());
+        System.out.println("Status Code: "+ response.getStatusCode());
+        invoiceLink = response.getBody().path("data.invoiceUrl");
+        System.out.println("Invoice Link: "+invoiceLink);
+    }
+
+    public static void createInvoice(String amount ,String country) throws Exception {
+        RestAssured.baseURI  = baseUrl();
+        String requestBody = "{\r\n"
+                + "    \"firstName\": \"" + "Richard" + "\",\r\n"
+                + "    \"lastName\": \"" + "Millan" + "\",\r\n"
+                + "    \"postCode\": \"" + "12536" + "\",\r\n"
+                + "    \"address\": \"" + "Lake Bridge road" + "\",\r\n"
+                + "    \"countryCode\": \"" + country + "\",\r\n"
+                + "    \"city\": \"" + "Texas" + "\",\r\n"
+                + "    \"emailAddress\": \"" + "hodl_rtl_tst_us_inv@mailinator.com" + "\",\r\n"
+                + "    \"mobileNumber\": \"" + "+17574498317" + "\",\r\n"
+                + "    \"currency\": \"" + invoiceCurrency() + "\",\r\n"
+                + "    \"amount\": \"" + amount + "\",\r\n"
+                + "    \"expiryDateTime\": \"" + "2023-07-29T00:00:00.000Z" + "\",\r\n"
+                + "    \"webhookUrl\": \"" + "www.webhook.com" + "\",\r\n"
+                + "    \"purpose\": \"" + "This is a test purpose." + "\"\r\n"
+                + "}";
+        response = given().headers(requestHeader())
+                .body(requestBody)
+                .when().post(endPoint)
+                .then().extract().response();
+
+        System.out.println("Response Body: "+response.getBody().asString());
+        System.out.println("Status Code: "+ response.getStatusCode());
+        invoiceLink = response.getBody().path("data.invoiceUrl");
+        System.out.println("Invoice Link: "+invoiceLink);
+    }
+    public static void createInvoice(String country , LocalDateTime expiredTime) throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String dateTime = expiredTime.minusHours(6).plusSeconds(10). format(formatter);
+
+        RestAssured.baseURI  = baseUrl();
+        String requestBody = "{\r\n"
+                + "    \"firstName\": \"" + "Richard" + "\",\r\n"
+                + "    \"lastName\": \"" + "Millan" + "\",\r\n"
+                + "    \"postCode\": \"" + "12536" + "\",\r\n"
+                + "    \"address\": \"" + "Lake Bridge road" + "\",\r\n"
+                + "    \"countryCode\": \"" + country + "\",\r\n"
+                + "    \"city\": \"" + "Texas" + "\",\r\n"
+                + "    \"emailAddress\": \"" + "hodl_rtl_tst_us_inv@mailinator.com" + "\",\r\n"
+                + "    \"mobileNumber\": \"" + "+17574498317" + "\",\r\n"
+                + "    \"currency\": \"" + invoiceCurrency() + "\",\r\n"
+                + "    \"amount\": \"" + invoiceAmount() + "\",\r\n"
+                + "    \"expiryDateTime\": \"" + dateTime + "\",\r\n"
                 + "    \"webhookUrl\": \"" + "www.webhook.com" + "\",\r\n"
                 + "    \"purpose\": \"" + "This is a test purpose." + "\"\r\n"
                 + "}";

@@ -6,28 +6,36 @@ import Utility.Partner_Payment_Api;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import io.cucumber.java.bs.A;
 import io.cucumber.java.en.*;
 
 import static Utility.BaseCredentials.invoiceLink;
 import static Utility.BaseCredentials.partnerEnv;
+import static Utility.Hooks.getDriver;
+import static Utility.Utils.dateTime;
 import static Utility.Utils.setEnvVariable;
 import static io.restassured.RestAssured.given;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Partner_Payment_Step {
     public WebDriver driver;
     private Scenario scenario;
-    String invoiceLinkUS, invoiceLinkBD;
+    String invoiceLink, invoiceLinkBD;
     String currentWindowHandle;
     Partner_Payment_Page partnerPaymentPage;
 
@@ -40,6 +48,16 @@ public class Partner_Payment_Step {
     public void waitload() {
         new WebDriverWait(driver, 30).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+    }
+
+    @After(order = 1)
+    public void takeScraenshotOnFailure(Scenario scenario) {
+
+        if (scenario.isFailed()) {
+            final byte[] screenshot = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", scenario.getName());
+        }
+
     }
     public void switchToSecondTab(){
         currentWindowHandle = driver.getWindowHandle();
@@ -84,22 +102,26 @@ public class Partner_Payment_Step {
     @Given("a valid invoice url for {string} users")
     public void a_valid_invoice_url_for_US_users(String country) throws Exception {
         Partner_Payment_Api.createInvoice(country);
-        System.out.println("3");
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    }
+
+    @Given ("a invoice url of amount {string} USD for {string} users")
+    public void a_invoice_url_of_amount_min_usd_for_us_users(String amount ,String country) throws Exception {
+        Partner_Payment_Api.createInvoice(amount,country);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     @When("user clicks on the invoice url")
     public void user_clicks_on_the_invoice_url() throws Exception {
 
-//        String url = "https://sandbox.hodl.clubswan.com/external/invoice-payment/c09f7745-4c57-4345-9ce3-51352c6f0de5";
-//        invoiceLinkUS = url.substring(8);
-//        setEnvVariable(invoiceLinkUS);
-//        driver.get(basicAuth() + invoiceLinkUS);
-//        System.out.println("1: " + invoiceLinkUS);
+//        String url = "https://sandbox.nexusprimemembers.com/external/invoice-payment/a3496579-ad7b-4a19-9cc4-522ebc0c3b7b";
+//        invoiceLink = url.substring(8);
+//        setEnvVariable(invoiceLink);
+//        driver.get(basicAuth() + invoiceLink);
 
-        invoiceLinkUS = Partner_Payment_Api.invoiceLink.substring(8);
-        setEnvVariable(invoiceLinkUS);
-        driver.get(basicAuth() + invoiceLinkUS);
+        invoiceLink = Partner_Payment_Api.invoiceLink.substring(8);
+        setEnvVariable(invoiceLink);
+        driver.get(basicAuth() + invoiceLink);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
     }
@@ -116,12 +138,21 @@ public class Partner_Payment_Step {
         driver.get(basicAuth() + invoiceLink());
 
     }
+    @Given("^a valid invoice url for Non-US users$")
+    public void a_valid_invoice_for_non_us_users() throws Exception {
+        driver.get(basicAuth() + invoiceLink());
+    }
+
 
     @Given ("user clicks on a US invoice link that has already been paid")
     public void a_valid_us_invoice_link_that_has_already_been_paid() throws Exception {
         driver.get(basicAuth() + invoiceLink());
     }
-    @When("user expends payment method dropdown")
+    @Given ("^user clicks on a Non-US invoice link that has already been paid$")
+    public void a_valid_non_us_invoice_link_that_has_already_been_paid() throws Exception {
+        driver.get(basicAuth() + invoiceLink());
+    }
+    @And("user expends payment method dropdown")
     public void user_expends_payment_method_dropdown() throws InterruptedException {
         partnerPaymentPage.paymentMethodDropdownClick();
         Thread.sleep(1000);
@@ -176,6 +207,13 @@ public class Partner_Payment_Step {
         driver.close();
         driver.switchTo().window(currentWindowHandle);
     }
+    @Then("user should see terms page in a new tab")
+    public void user_should_see_terms_page_in_a_new_tab() throws InterruptedException {
+        switchToSecondTab();
+        Assert.assertTrue("CoinX terms page not appeared!!!",driver.getCurrentUrl().endsWith("/terms"));
+        driver.close();
+        driver.switchTo().window(currentWindowHandle);
+    }
 
     @Then ("user should see us privacy page in a new tab")
     public void user_should_see_us_privacy_page_in_a_new_tab(){
@@ -184,11 +222,25 @@ public class Partner_Payment_Step {
         driver.close();
         driver.switchTo().window(currentWindowHandle);
     }
+    @Then ("user should see privacy page in a new tab")
+    public void user_should_see_privacy_page_in_a_new_tab(){
+        switchToSecondTab();
+        Assert.assertTrue("CoinX terms page not appeared!!!",driver.getCurrentUrl().endsWith("/privacy"));
+        driver.close();
+        driver.switchTo().window(currentWindowHandle);
+    }
 
     @Then ("user should see us membership agreement page in a new tab")
     public void user_should_see_us_membership_agreement_page_in_a_new_tab(){
         switchToSecondTab();
         Assert.assertTrue("CoinX terms page not appeared!!!",driver.getCurrentUrl().endsWith("/membershipUs"));
+        driver.close();
+        driver.switchTo().window(currentWindowHandle);
+    }
+    @Then ("user should see membership agreement page in a new tab")
+    public void user_should_see_membership_agreement_page_in_a_new_tab(){
+        switchToSecondTab();
+        Assert.assertTrue("CoinX terms page not appeared!!!",driver.getCurrentUrl().endsWith("/membership"));
         driver.close();
         driver.switchTo().window(currentWindowHandle);
     }
@@ -219,8 +271,57 @@ public class Partner_Payment_Step {
 
     @Then ("user should see an already paid error message")
     public void user_should_see_an_already_paid_error_message(){
-        fgdfg
+        Assert.assertTrue("Invoice payment has already been requested! doesn't appaered", partnerPaymentPage.paymentRequestedMsgCheck());
     }
+
+    @When ("a {string} invoice link that has been expired")
+    public void user_clicks_on_the_invoice_link_that_has_been_expired(String country) throws Exception {
+        Partner_Payment_Api.createInvoice(country,dateTime());
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        Thread.sleep(12000);
+    }
+
+    @Then("user should see an expired error message")
+    public void user_should_see_an_expired_error_message() {
+        Assert.assertTrue("Invoice expire message not appeared as expected!!!",partnerPaymentPage.invoiceExpireMsgCheck());
+
+    }
+
+
+    @And("user selects ETH crypto currency")
+    public void user_selects_eth_crypto_currency() throws InterruptedException {
+        partnerPaymentPage.selectEth();
+
+    }
+    @Then("an error message with minimum crypto amount should appear")
+    public void an_error_message_with_minimum_crypto_amount_should_appear() throws InterruptedException {
+        Assert.assertTrue("ETH minimum error message not appeared",partnerPaymentPage.minEthMsgCheck());
+        driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+    }
+
+    @When("user selects ETH,LTC,USDT crypto currency")
+    public void user_selects_different_crypto_currency() {
+        System.out.println();
+    }
+    @Then("an error message with maximum crypto amount should appear")
+    public void an_error_message_with_maximum_crypto_amount_should_appear() throws InterruptedException {
+        Assert.assertTrue("Maximum crypto amount error message doesn't appeared as expected!!!",partnerPaymentPage.maxCryptoAmtCheck());
+    }
+
+    @Then ("an error message for maximum BTC should appear")
+    public void an_error_message_for_maximum_btc_should_appear(){
+        Assert.assertTrue("Maximum BTC amount error message doesn't appeared as expected!!!",partnerPaymentPage.maxBtcMsgCheck());
+        driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+
+    }
+
+    @Then("a payment error message should appear")
+    public void a_payment_error_message_should_appear() {
+        Assert.assertTrue("Expected error message not appeared!!!",partnerPaymentPage.paymentFailedPageCheck());
+    }
+
+
+
 
 
 

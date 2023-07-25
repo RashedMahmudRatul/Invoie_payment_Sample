@@ -1,6 +1,5 @@
 package Pages;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -10,7 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Utility.BaseCredentials.*;
+import static Utility.BaseCredentials.invoiceAmount;
+import static Utility.BaseCredentials.invoiceCurrency;
 
 public class Partner_Payment_Page {
     public static WebDriver driver;
@@ -70,7 +70,13 @@ public class Partner_Payment_Page {
     @FindBy(xpath = "//h5[text()='Payment Status']/../../div[2]/div")
     WebElement successMsg;
     @FindBy(xpath = "//h4[text()='Pay Total']/../../../../div[2]/div/p")
-    WebElement payementRequestedMsg;
+    WebElement paymentRequestedMsg;
+    @FindBy(xpath = "(//div[@role='button'])[2]/../../../div[2]")
+    WebElement minMaxCryptoMsg;
+    @FindBy(xpath = "//label[text()='Payment Method']/../../p")
+    WebElement maxBtcMsg;
+    @FindBy(xpath = "//h4[text()='Pay Total']/../../../../div[2]/div/p")
+    WebElement invoiceExpireMsg;
 
     public Partner_Payment_Page(WebDriver driver) {
         PageFactory.initElements(driver, this);
@@ -197,7 +203,8 @@ public class Partner_Payment_Page {
         Thread.sleep(1000);
         String tempAmount = "";
         String currentAmt = "";
-        for (int i = 0; i < cryptoList.size(); i++) {
+        int cryptoCount = cryptoList.size();
+        for (int i = 0; i < cryptoCount; i++) {
             if (i == 0) {
                 btc.click();
                 currentAmt = cryptoAmt.getText();
@@ -303,12 +310,97 @@ public class Partner_Payment_Page {
         else
             return false;
     }
-    public boolean payementRequestedMsgCheck(){
-        if (payementRequestedMsg.isDisplayed()){
-            if (payementRequestedMsg.getText().equals("Invoice payment has already been requested!"))
+
+    public boolean paymentFailedPageCheck() {
+        boolean successMsgs = successMsg.getText().equals("Your recent payment request was unsuccessful.\n" + "Please contact a member of support for further assistance.");
+        System.out.println("Text in success msg: " + successMsgs);
+
+        if (payStatusLabel.isDisplayed() && confirmationIcon.isDisplayed() && successMsgs)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean paymentRequestedMsgCheck() {
+        if (paymentRequestedMsg.isDisplayed()) {
+            if (paymentRequestedMsg.getText().equals("Invoice payment has already been requested!"))
                 return true;
         }
         return false;
     }
+
+
+    public void selectEth() throws InterruptedException {
+        cryptoListDropdown.click();
+        Thread.sleep(500);
+        eth.click();
+        Thread.sleep(2000);
+    }
+
+    public boolean minEthMsgCheck() throws InterruptedException {
+        if (minMaxCryptoMsg.isDisplayed() && minMaxCryptoMsg.getText().trim().equals("minimun order amount is 0.01 ETH")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean maxCryptoAmtCheck() throws InterruptedException {
+        List<String> checkedCurrency = new ArrayList<>();
+        String[] availableCrypto = {"TETH", "TLTC", "USDT"};
+        cryptoListDropdown.click();
+        Thread.sleep(1000);
+        int cryptoCount = cryptoList.size();
+
+        for (int i = 0; i < cryptoCount; i++) {
+            if (i == 1) {
+                eth.click();
+                Thread.sleep(3000);
+                if (minMaxCryptoMsg.getText().trim().equals("maximum order amount is 10 ETH")) {
+                    checkedCurrency.add("TETH");
+                    System.out.println("ETH Done");
+                }
+                Thread.sleep(1000);
+                cryptoListDropdown.click();
+                Thread.sleep(1000);
+            } else if (i == 2) {
+                ltc.click();
+                Thread.sleep(3000);
+                if (minMaxCryptoMsg.getText().trim().equals("maximum order amount is 50 LTC")) {
+                    checkedCurrency.add("TLTC");
+                    System.out.println("LTC Done");
+                }
+                Thread.sleep(1000);
+                cryptoListDropdown.click();
+                Thread.sleep(1000);
+            } else if (i == 3) {
+                usdt.click();
+                Thread.sleep(3000);
+                if (minMaxCryptoMsg.getText().trim().equals("maximum order amount is 100000 USDT")) {
+                    checkedCurrency.add("USDT");
+                    System.out.println("USDT Done");
+                }
+
+            }
+
+        }
+        System.out.println(checkedCurrency);
+        if (checkedCurrency.size() != availableCrypto.length) {
+            System.out.println("Unable to check all currency conversion!!");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean maxBtcMsgCheck(){
+        if (maxBtcMsg.isDisplayed() && maxBtcMsg.getText().trim().equals("maximum order amount is 5 BTC"))
+            return true;
+        else return false;
+    }
+    public boolean invoiceExpireMsgCheck(){
+        if (invoiceExpireMsg.isDisplayed() && invoiceExpireMsg.getText().trim().equals("Invoice has expired"))
+            return true;
+        else return false;
+    }
+
 
 }

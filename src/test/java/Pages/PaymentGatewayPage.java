@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PaymentGatewayPage {
+public class PaymentGatewayPage{
     public static WebDriver driver;
     @FindBy(id = "apex-frame")
     WebElement apexFrame;
@@ -74,6 +74,9 @@ public class PaymentGatewayPage {
     }
     public void enterStripeCardNum() {
         cardNumber.sendKeys(BaseData.stripeCardNumber());
+    }
+    public void wrongCardNumberStripe() {
+        cardNumber.sendKeys("4456530000001096");
     }
     public void enterAddCardNumber() {
         cardNumber.sendKeys("4000000360000006");

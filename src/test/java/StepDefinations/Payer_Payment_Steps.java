@@ -1,7 +1,7 @@
 package StepDefinations;
 
 import Pages.Partner_Payment_Page;
-import Utility.Hooks;
+import Utility.Hook;
 import Utility.Partner_Payment_Api;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
@@ -9,12 +9,11 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.java.bs.A;
 import io.cucumber.java.en.*;
 
 import static Utility.BaseCredentials.invoiceLink;
 import static Utility.BaseCredentials.partnerEnv;
-import static Utility.Hooks.getDriver;
+import static Utility.Hook.getDriver;
 import static Utility.Utils.dateTime;
 import static Utility.Utils.setEnvVariable;
 import static io.restassured.RestAssured.given;
@@ -27,8 +26,6 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +38,7 @@ public class Partner_Payment_Step {
 
 
     public Partner_Payment_Step() {
-        this.driver = Hooks.getDriver();
+        this.driver = Hook.getDriver();
         partnerPaymentPage = new Partner_Payment_Page(driver);
     }
 

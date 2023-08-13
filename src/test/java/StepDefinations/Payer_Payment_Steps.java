@@ -1,6 +1,6 @@
 package StepDefinations;
 
-import Pages.Partner_Payment_Page;
+import Pages.Payer_Payment_Page;
 import Utility.Hook;
 import Utility.Partner_Payment_Api;
 import com.aventstack.extentreports.markuputils.ExtentColor;
@@ -29,17 +29,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class Partner_Payment_Step {
+public class Payer_Payment_Steps {
     public WebDriver driver;
     private Scenario scenario;
     String invoiceLink, invoiceLinkBD;
     String currentWindowHandle;
-    Partner_Payment_Page partnerPaymentPage;
+    Payer_Payment_Page partnerPaymentPage;
 
 
-    public Partner_Payment_Step() {
+    public Payer_Payment_Steps() {
         this.driver = Hook.getDriver();
-        partnerPaymentPage = new Partner_Payment_Page(driver);
+        partnerPaymentPage = new Payer_Payment_Page(driver);
     }
 
     public void waitload() {
@@ -87,9 +87,9 @@ public class Partner_Payment_Step {
      */
     private static String basicAuth() throws Exception {
         if (partnerEnv().trim().equals("tst")) {
-            return "https://sandbox:test!easy@";
+            return "https://username:passwrod@";
         } else if (partnerEnv().trim().equals("dev")) {
-            return "https://devs:super!power@";
+            return "https://username:passwrod@";
         } else {
             System.out.println("Please check Environment name in config.properties file");
             return "";

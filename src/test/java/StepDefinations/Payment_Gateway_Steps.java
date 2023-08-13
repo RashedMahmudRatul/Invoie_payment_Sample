@@ -1,6 +1,6 @@
 package StepDefinations;
 
-import Pages.PaymentGatewayPage;
+import Pages.Payment_Gateway_Page;
 import Utility.Hook;
 import io.cucumber.java.en.And;
 import org.openqa.selenium.By;
@@ -8,12 +8,12 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Payment_Gateway_Step {
+public class Payment_Gateway_Steps {
     public WebDriver driver;
-    PaymentGatewayPage paymentpage;
-    public Payment_Gateway_Step() {
+    Payment_Gateway_Page paymentpage;
+    public Payment_Gateway_Steps() {
         this.driver = Hook.getDriver();
-        paymentpage = new PaymentGatewayPage(driver);
+        paymentpage = new Payment_Gateway_Page(driver);
     }
     public void waitload(){
         new WebDriverWait(driver, 30).until(

@@ -1,5 +1,6 @@
 package Pages;
 
+import Utility.Hook;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -12,7 +13,7 @@ import java.util.List;
 import static Utility.BaseCredentials.invoiceAmount;
 import static Utility.BaseCredentials.invoiceCurrency;
 
-public class Partner_Payment_Page {
+public class Payer_Payment_Page{
     public static WebDriver driver;
 
     @FindBy(xpath = "//h5[text()='Invoice Summary']")
@@ -78,7 +79,7 @@ public class Partner_Payment_Page {
     @FindBy(xpath = "//h4[text()='Pay Total']/../../../../div[2]/div/p")
     WebElement invoiceExpireMsg;
 
-    public Partner_Payment_Page(WebDriver driver) {
+    public Payer_Payment_Page(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
@@ -197,6 +198,7 @@ public class Partner_Payment_Page {
      * This method compares the crypto amount with the previous amount after changing the currency
      */
     public boolean convCryptoAmtCheck() throws InterruptedException {
+
         List<String> checkedCurrency = new ArrayList<>();
         String[] availableCrypto = {"TBTC", "TETH", "TLTC", "USDT"};
         cryptoListDropdown.click();

@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PaymentGatewayPage{
+public class Payment_Gateway_Page {
     public static WebDriver driver;
     @FindBy(id = "apex-frame")
     WebElement apexFrame;
@@ -36,7 +36,7 @@ public class PaymentGatewayPage{
     @FindBy(xpath = "//h3[text()='Payment Information']")
     WebElement paymentInfoLebel;
 
-    public PaymentGatewayPage(WebDriver driver) {
+    public Payment_Gateway_Page(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
     public boolean apexFrameCheck() {

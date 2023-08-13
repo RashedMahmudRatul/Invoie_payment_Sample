@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 
 public class Partner_Payment_Api {
     public static String  invoiceLink;
-    static String  endPoint =  "/v2/payment/invoice";
+    static String  endPoint =  "EndPoint_here";
     static Response response = new RestAssuredResponseImpl();
 
     /**
@@ -36,10 +36,10 @@ public class Partner_Payment_Api {
      * This method will return the baseURL as per environment that set in Partner_Payment_Key_Token.properties file.
      */
     private static String baseUrl() throws Exception {
-        if (partnerEnv().trim().equals("tst")) {
-            return "https://partner.tst.auws.cloud";
+        if (partnerEnv().trim().equals("test")) {
+            return "test_api_link";
         } else if (partnerEnv().trim().equals("dev")) {
-            return  "https://partner.dev.auws.cloud";
+            return  "dev_api_link";
         } else {
             System.out.println("Please check Environment name in config.properties file");
             return "";
@@ -53,14 +53,14 @@ public class Partner_Payment_Api {
                 + "    \"lastName\": \"" + "Millan" + "\",\r\n"
                 + "    \"postCode\": \"" + "12536" + "\",\r\n"
                 + "    \"address\": \"" + "Lake Bridge road" + "\",\r\n"
-                + "    \"countryCode\": \"" + country + "\",\r\n"
-                + "    \"city\": \"" + "Texas" + "\",\r\n"
-                + "    \"emailAddress\": \"" + "hodl_rtl_tst_us_inv@mailinator.com" + "\",\r\n"
+                + "    \"countryCode\": \"" + "Bangladesh" + "\",\r\n"
+                + "    \"city\": \"" + "Dhaka" + "\",\r\n"
+                + "    \"emailAddress\": \"" + "user@mailinator.com" + "\",\r\n"
                 + "    \"mobileNumber\": \"" + "+17574498317" + "\",\r\n"
-                + "    \"currency\": \"" + invoiceCurrency() + "\",\r\n"
-                + "    \"amount\": \"" + invoiceAmount() + "\",\r\n"
+                + "    \"currency\": \"" + "USD" + "\",\r\n"
+                + "    \"amount\": \"" + "100" + "\",\r\n"
                 + "    \"expiryDateTime\": \"" + "2023-07-29T00:00:00.000Z" + "\",\r\n"
-                + "    \"webhookUrl\": \"" + "www.webhook.com" + "\",\r\n"
+                + "    \"webhookUrl\": \"" + "www.google.com" + "\",\r\n"
                 + "    \"purpose\": \"" + "This is a test purpose." + "\"\r\n"
                 + "}";
         response = given().headers(requestHeader())
@@ -70,7 +70,7 @@ public class Partner_Payment_Api {
 
         System.out.println("Response Body: "+response.getBody().asString());
         System.out.println("Status Code: "+ response.getStatusCode());
-        invoiceLink = response.getBody().path("data.invoiceUrl");
+        invoiceLink = response.getBody().path("data.url");
         System.out.println("Invoice Link: "+invoiceLink);
     }
 
@@ -81,14 +81,14 @@ public class Partner_Payment_Api {
                 + "    \"lastName\": \"" + "Millan" + "\",\r\n"
                 + "    \"postCode\": \"" + "12536" + "\",\r\n"
                 + "    \"address\": \"" + "Lake Bridge road" + "\",\r\n"
-                + "    \"countryCode\": \"" + country + "\",\r\n"
-                + "    \"city\": \"" + "Texas" + "\",\r\n"
-                + "    \"emailAddress\": \"" + "hodl_rtl_tst_us_inv@mailinator.com" + "\",\r\n"
+                + "    \"countryCode\": \"" + "UAE" + "\",\r\n"
+                + "    \"city\": \"" + "City" + "\",\r\n"
+                + "    \"emailAddress\": \"" + "user@mailinator.com" + "\",\r\n"
                 + "    \"mobileNumber\": \"" + "+17574498317" + "\",\r\n"
-                + "    \"currency\": \"" + invoiceCurrency() + "\",\r\n"
-                + "    \"amount\": \"" + amount + "\",\r\n"
+                + "    \"currency\": \"" + "USD" + "\",\r\n"
+                + "    \"amount\": \"" + "100" + "\",\r\n"
                 + "    \"expiryDateTime\": \"" + "2023-07-29T00:00:00.000Z" + "\",\r\n"
-                + "    \"webhookUrl\": \"" + "www.webhook.com" + "\",\r\n"
+                + "    \"webhookUrl\": \"" + "www.google.com" + "\",\r\n"
                 + "    \"purpose\": \"" + "This is a test purpose." + "\"\r\n"
                 + "}";
         response = given().headers(requestHeader())
@@ -98,7 +98,7 @@ public class Partner_Payment_Api {
 
         System.out.println("Response Body: "+response.getBody().asString());
         System.out.println("Status Code: "+ response.getStatusCode());
-        invoiceLink = response.getBody().path("data.invoiceUrl");
+        invoiceLink = response.getBody().path("data.url");
         System.out.println("Invoice Link: "+invoiceLink);
     }
     public static void createInvoice(String country , LocalDateTime expiredTime) throws Exception {
@@ -111,14 +111,14 @@ public class Partner_Payment_Api {
                 + "    \"lastName\": \"" + "Millan" + "\",\r\n"
                 + "    \"postCode\": \"" + "12536" + "\",\r\n"
                 + "    \"address\": \"" + "Lake Bridge road" + "\",\r\n"
-                + "    \"countryCode\": \"" + country + "\",\r\n"
+                + "    \"countryCode\": \"" + "Bangladesh" + "\",\r\n"
                 + "    \"city\": \"" + "Texas" + "\",\r\n"
-                + "    \"emailAddress\": \"" + "hodl_rtl_tst_us_inv@mailinator.com" + "\",\r\n"
+                + "    \"emailAddress\": \"" + "user@mailinator.com" + "\",\r\n"
                 + "    \"mobileNumber\": \"" + "+17574498317" + "\",\r\n"
-                + "    \"currency\": \"" + invoiceCurrency() + "\",\r\n"
-                + "    \"amount\": \"" + invoiceAmount() + "\",\r\n"
+                + "    \"currency\": \"" + "USD" + "\",\r\n"
+                + "    \"amount\": \"" + "100" + "\",\r\n"
                 + "    \"expiryDateTime\": \"" + dateTime + "\",\r\n"
-                + "    \"webhookUrl\": \"" + "www.webhook.com" + "\",\r\n"
+                + "    \"webhookUrl\": \"" + "www.gogle.com" + "\",\r\n"
                 + "    \"purpose\": \"" + "This is a test purpose." + "\"\r\n"
                 + "}";
         response = given().headers(requestHeader())
@@ -128,7 +128,7 @@ public class Partner_Payment_Api {
 
         System.out.println("Response Body: "+response.getBody().asString());
         System.out.println("Status Code: "+ response.getStatusCode());
-        invoiceLink = response.getBody().path("data.invoiceUrl");
+        invoiceLink = response.getBody().path("data.url");
         System.out.println("Invoice Link: "+invoiceLink);
     }
 

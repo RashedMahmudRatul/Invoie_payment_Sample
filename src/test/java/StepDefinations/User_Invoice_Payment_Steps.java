@@ -39,7 +39,7 @@ public class User_Invoice_Payment_Steps {
         userPaymentPage = new User_Invoice_Payment_Page(driver);
     }
 
-    public void waitload() {
+    public void waitLoad() {
         new WebDriverWait(driver, 30).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
@@ -147,6 +147,7 @@ public class User_Invoice_Payment_Steps {
     @And("user expends payment method dropdown")
     public void user_expends_payment_method_dropdown() throws InterruptedException {
         userPaymentPage.paymentMethodDropdownClick();
+        driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
         Thread.sleep(1000);
     }
 
@@ -158,7 +159,7 @@ public class User_Invoice_Payment_Steps {
     @And("user selects crypto as payment method")
     public void user_selects_crypto_as_payment_method() {
         userPaymentPage.selectCrypto();
-        waitload();
+        waitLoad();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 

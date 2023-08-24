@@ -8,10 +8,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.concurrent.TimeUnit;
+
 public class Payment_Gateway_Page {
-    public static WebDriver driver;
-    @FindBy(id = "apex-frame")
-    WebElement apexFrame;
+    public WebDriver driver;
     @FindBy(xpath = "//iframe[contains(@name,'__privateStripeFrame')]")
     WebElement stripeFrame;
     @FindBy(xpath = "//*[@id=\"card_number\"]")
@@ -32,8 +32,6 @@ public class Payment_Gateway_Page {
     WebElement cvc;
     @FindBy(xpath = "//span[text()='Pay']")
     WebElement stripePayBtn;
-    @FindBy(xpath = "//span[text()='Add Card']")
-    WebElement stripeAddCardBtn;
     @FindBy(xpath = "//h3[text()='Payment Information']")
     WebElement paymentInfoLebel;
 
@@ -41,22 +39,7 @@ public class Payment_Gateway_Page {
         this.driver = Driver_Setup.driver;
         PageFactory.initElements(driver, this);
     }
-    public boolean apexFrameCheck() {
-        try {
-            return apexFrame.isDisplayed();
-        } catch (NoSuchElementException e) {
-            System.out.println("No Apex");
-        }
-        return false;
-    }
-    public boolean stripeFrameCheck() {
-        try {
-            return stripeFrame.isDisplayed();
-        } catch (NoSuchElementException e) {
-            System.out.println("No Stripe");
-        }
-        return false;
-    }
+
     public void enterApxxCardNum() {
         cardNo.sendKeys(BaseData.cardNumber());
     }
@@ -68,37 +51,36 @@ public class Payment_Gateway_Page {
     public void enterApxxCardYear() {
         expYear.sendKeys(BaseData.cardYear());
     }
+
     public void enterApexxCvv() {
         cvv.sendKeys(BaseData.cardCvv());
     }
+
     public void clickApxxPay() {
         payBtn.click();
     }
+
     public void enterStripeCardNum() {
         cardNumber.sendKeys(BaseData.stripeCardNumber());
     }
+
     public void wrongCardNumberStripe() {
         cardNumber.sendKeys("4456530000001096");
-    }
-    public void enterAddCardNumber() {
-        cardNumber.sendKeys("4000000360000006");
     }
 
     public void enterStripeExpdate() {
 
         expDate.sendKeys(BaseData.stripeCardExpiry());
     }
+
     public void enterStripeCvc() {
         cvc.sendKeys(BaseData.cardCvv());
     }
+
     public void stripePayClick() throws InterruptedException {
         paymentInfoLebel.click();
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         stripePayBtn.click();
     }
-    public void stripeAddCardBtnClick() throws InterruptedException {
-        paymentInfoLebel.click();
-        Thread.sleep(1000);
-        stripeAddCardBtn.click();
-    }
+
 }

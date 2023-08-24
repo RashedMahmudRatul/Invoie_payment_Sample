@@ -9,12 +9,13 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static Utility.BaseCredentials.invoiceAmount;
 import static Utility.BaseCredentials.invoiceCurrency;
 
 public class User_Invoice_Payment_Page {
-    public WebDriver driver;
+    private WebDriver driver;
 
     @FindBy(xpath = "//h5[text()='Invoice Summary']")
     WebElement invSummaryLabel;
@@ -175,7 +176,7 @@ public class User_Invoice_Payment_Page {
      */
     public boolean cryptoListCheck() throws InterruptedException {
         cryptoListDropdown.click();
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         List<String> allCrypto = new ArrayList<>();
         String[] availableCrypto = {"TBTC", "TETH", "TLTC", "USDT"};
         for (WebElement crypto : cryptoList) {
@@ -203,7 +204,7 @@ public class User_Invoice_Payment_Page {
         List<String> checkedCurrency = new ArrayList<>();
         String[] availableCrypto = {"TBTC", "TETH", "TLTC", "USDT"};
         cryptoListDropdown.click();
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         String tempAmount = "";
         String currentAmt = "";
         int cryptoCount = cryptoList.size();
@@ -216,34 +217,31 @@ public class User_Invoice_Payment_Page {
                     checkedCurrency.add("TBTC");
                     System.out.println("BTC Done");
                 }
-                Thread.sleep(1000);
                 cryptoListDropdown.click();
-                Thread.sleep(1000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             } else if (i == 1) {
                 eth.click();
-                Thread.sleep(2000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                 currentAmt = cryptoAmt.getText();
                 if (!tempAmount.equals(currentAmt)) {
                     checkedCurrency.add("TETH");
                     System.out.println("ETH Done");
                 }
-                Thread.sleep(1000);
                 cryptoListDropdown.click();
-                Thread.sleep(1000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             } else if (i == 2) {
                 ltc.click();
-                Thread.sleep(2000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                 currentAmt = cryptoAmt.getText();
                 if (!tempAmount.equals(currentAmt)) {
                     checkedCurrency.add("TLTC");
                     System.out.println("LTC Done");
                 }
-                Thread.sleep(1000);
                 cryptoListDropdown.click();
-                Thread.sleep(1000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             } else if (i == 3) {
                 usdt.click();
-                Thread.sleep(2000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                 currentAmt = cryptoAmt.getText();
                 if (!tempAmount.equals(currentAmt)) {
                     checkedCurrency.add("USDT");
@@ -287,13 +285,13 @@ public class User_Invoice_Payment_Page {
      */
     public void selectBtc() throws InterruptedException {
         cryptoListDropdown.click();
-        Thread.sleep(500);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         btc.click();
     }
 
     public void agreementCheckBoxClick() throws InterruptedException {
         agreementCheckBox.click();
-        Thread.sleep(500);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     public void confirmBtnClick() throws InterruptedException {
@@ -335,9 +333,9 @@ public class User_Invoice_Payment_Page {
 
     public void selectEth() throws InterruptedException {
         cryptoListDropdown.click();
-        Thread.sleep(500);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         eth.click();
-        Thread.sleep(2000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     public boolean minEthMsgCheck() throws InterruptedException {
@@ -351,33 +349,35 @@ public class User_Invoice_Payment_Page {
         List<String> checkedCurrency = new ArrayList<>();
         String[] availableCrypto = {"TETH", "TLTC", "USDT"};
         cryptoListDropdown.click();
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         int cryptoCount = cryptoList.size();
 
         for (int i = 0; i < cryptoCount; i++) {
             if (i == 1) {
                 eth.click();
-                Thread.sleep(3000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
                 if (minMaxCryptoMsg.getText().trim().equals("maximum order amount is 10 ETH")) {
                     checkedCurrency.add("TETH");
                     System.out.println("ETH Done");
                 }
-                Thread.sleep(1000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                 cryptoListDropdown.click();
-                Thread.sleep(1000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             } else if (i == 2) {
                 ltc.click();
-                Thread.sleep(3000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
                 if (minMaxCryptoMsg.getText().trim().equals("maximum order amount is 50 LTC")) {
                     checkedCurrency.add("TLTC");
                     System.out.println("LTC Done");
                 }
-                Thread.sleep(1000);
                 cryptoListDropdown.click();
-                Thread.sleep(1000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             } else if (i == 3) {
                 usdt.click();
-                Thread.sleep(3000);
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
                 if (minMaxCryptoMsg.getText().trim().equals("maximum order amount is 100000 USDT")) {
                     checkedCurrency.add("USDT");
                     System.out.println("USDT Done");
@@ -394,12 +394,13 @@ public class User_Invoice_Payment_Page {
         return true;
     }
 
-    public boolean maxBtcMsgCheck(){
+    public boolean maxBtcMsgCheck() {
         if (maxBtcMsg.isDisplayed() && maxBtcMsg.getText().trim().equals("maximum order amount is 5 BTC"))
             return true;
         else return false;
     }
-    public boolean invoiceExpireMsgCheck(){
+
+    public boolean invoiceExpireMsgCheck() {
         if (invoiceExpireMsg.isDisplayed() && invoiceExpireMsg.getText().trim().equals("Invoice has expired"))
             return true;
         else return false;

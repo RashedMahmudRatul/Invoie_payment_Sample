@@ -1,7 +1,6 @@
 package StepDefinations;
 
 import Pages.User_Invoice_Payment_Page;
-import Utility.Driver_Setup;
 import Utility.Partner_Payment_Api;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
@@ -27,7 +26,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class Payer_Payment_Steps {
+public class User_Invoice_Payment_Steps {
     public WebDriver driver;
     private Scenario scenario;
     String invoiceLink, invoiceLinkBD;
@@ -35,7 +34,7 @@ public class Payer_Payment_Steps {
     User_Invoice_Payment_Page userPaymentPage;
 
 
-    public Payer_Payment_Steps() throws IOException {
+    public User_Invoice_Payment_Steps() throws IOException {
         this.driver = getDriver();
         userPaymentPage = new User_Invoice_Payment_Page(driver);
     }

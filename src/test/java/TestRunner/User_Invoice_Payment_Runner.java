@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
         plugin ={"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:","rerun:target/failedrerun.txt"},
         monochrome = true)
 
-public class Partner_Payment_Runner {
+public class User_Invoice_Payment_Runner {
 
 
 

@@ -1,6 +1,7 @@
 package Pages;
 
 import Utility.BaseData;
+import Utility.Driver_Setup;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,6 +38,7 @@ public class Payment_Gateway_Page {
     WebElement paymentInfoLebel;
 
     public Payment_Gateway_Page(WebDriver driver) {
+        this.driver = Driver_Setup.driver;
         PageFactory.initElements(driver, this);
     }
     public boolean apexFrameCheck() {

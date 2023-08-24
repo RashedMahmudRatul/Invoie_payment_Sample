@@ -1,52 +1,52 @@
 package Utility;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 public class BaseCredentials {
-
+    static Properties prop = new Properties();
+    static FileInputStream file;
     public static String invoiceLink() throws Exception {
-
-        Properties prop = new Properties();
-        FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
-        String InvoiceLink = prop.getProperty("InvoiceLink");
-        return InvoiceLink;
+        String invoiceLink = prop.getProperty("InvoiceLink");
+        return invoiceLink;
     }
     public static String partnerEnv() throws Exception {
 
         Properties prop = new Properties();
         FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
-        String Environment = prop.getProperty("Environment");
-        return Environment;
+        String environment = prop.getProperty("Environment");
+        return environment;
     }
     public static String partnerOrigin() throws Exception {
 
         Properties prop = new Properties();
         FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
-        String Environment = prop.getProperty("Origin");
-        return Environment;
+        String origin = prop.getProperty("Origin");
+        return origin;
     }
     public static String invoiceCurrency() throws Exception {
 
         Properties prop = new Properties();
         FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
-        String Currency = prop.getProperty("Currency");
-        return Currency;
+        String currency = prop.getProperty("Currency");
+        return currency;
     }
 
     public static String invoiceAmount() throws Exception {
 
         Properties prop = new Properties();
         FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
         String Amount = prop.getProperty("Amount");
         return Amount;
@@ -56,7 +56,7 @@ public class BaseCredentials {
         String Key;
         Properties prop = new Properties();
         FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
         if (partnerEnv().equals("dev") && partnerOrigin().equals("US")){
             Key = prop.getProperty("Key_us_dev");
@@ -79,9 +79,7 @@ public class BaseCredentials {
 
     public static String pgwToken() throws Exception {
         String Token;
-        Properties prop = new Properties();
-        FileInputStream file;
-        file = new FileInputStream("./src/test/resources/Partner_Payment_Key_Token.properties");
+        file = new FileInputStream("./src/test/resources/User_Payment_Key_Token.properties");
         prop.load(file);
 
         if (partnerEnv().equals("dev") && partnerOrigin().equals("US")){
@@ -101,6 +99,13 @@ public class BaseCredentials {
         }
         else
             return "";
+    }
+    public static String browserName() throws IOException, FileNotFoundException {
+        file = new FileInputStream("./src/test/resources/configuration.properties");
+        prop.load(file);
+        String bsrName = prop.getProperty("Browser");
+        return bsrName;
+
     }
 
 }

@@ -1,18 +1,20 @@
 package StepDefinations;
 
 import Pages.Payment_Gateway_Page;
-import Utility.Hook;
+import Utility.Driver_Setup;
 import io.cucumber.java.en.And;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
+
 public class Payment_Gateway_Steps {
     public WebDriver driver;
     Payment_Gateway_Page paymentpage;
-    public Payment_Gateway_Steps() {
-        this.driver = Hook.getDriver();
+    public Payment_Gateway_Steps() throws IOException {
+        this.driver = Driver_Setup.getDriver();
         paymentpage = new Payment_Gateway_Page(driver);
     }
     public void waitload(){

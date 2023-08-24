@@ -1,6 +1,6 @@
 package Pages;
 
-import Utility.Hook;
+import Utility.Driver_Setup;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -13,8 +13,8 @@ import java.util.List;
 import static Utility.BaseCredentials.invoiceAmount;
 import static Utility.BaseCredentials.invoiceCurrency;
 
-public class Payer_Payment_Page{
-    public static WebDriver driver;
+public class User_Invoice_Payment_Page {
+    public WebDriver driver;
 
     @FindBy(xpath = "//h5[text()='Invoice Summary']")
     WebElement invSummaryLabel;
@@ -79,7 +79,8 @@ public class Payer_Payment_Page{
     @FindBy(xpath = "//h4[text()='Pay Total']/../../../../div[2]/div/p")
     WebElement invoiceExpireMsg;
 
-    public Payer_Payment_Page(WebDriver driver) {
+    public User_Invoice_Payment_Page(WebDriver driver) {
+        this.driver = Driver_Setup.driver;
         PageFactory.initElements(driver, this);
     }
 
